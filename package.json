@@ -1,0 +1,23 @@
+{
+  "name": "db2ia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RandleBR/db2ia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RandleBR/db2ia/issues"
+  },
+  "homepage": "https://github.com/RandleBR/db2ia#readme",
+  "dependencies": {
+    "to-markdown": "^3.0.4"
+  }
+}
