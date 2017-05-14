@@ -1,0 +1,1663 @@
+<html><head><title>DB2 for i access APIs</title><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" ><STYLE type="text/css">TABLE { border-collapse: collapse; border-top: 1px; border-left: 1px; border-style: solid; margin: 4px; }TD, TH { border-bottom: 1px; border-right: 1px; border-style: solid; padding: 4px; }TH { background-color: #D8D8D8; }</STYLE></head><body><div><p dir="ltr"><a id="top" name="top"></a></p>
+
+<h1 dir="ltr"><span style="font-size:28px;">DB2 for i Access APIs</span></h1>
+
+<p dir="ltr"><a href="#Introduction">Introduction</a></p>
+
+<p dir="ltr"><a href="#Examples">Examples</a></p>
+
+<p dir="ltr" style="margin-left: 40px;"><a href="#Basic Query">Basic&nbsp;Query</a><br></br>
+<a href="#Stored Procedure">Stored&nbsp;Procedure</a></p>
+
+<p dir="ltr"><a href="#Methods">Methods</a></p>
+
+<p dir="ltr" style="margin-left: 40px;"><a href="#autoCommit">autoCommit</a><br></br>
+<a href="#serverMode">serverMode</a><br></br>
+<a href="#cursorType">cursorType</a><br></br>
+<a href="#setEnvAttr">setEnvAttr</a><br></br>
+<a href="#setConnAttr">setConnAttr</a><br></br>
+<a href="#setStmtAttr">setStmtAttr</a><br></br>
+<a href="#getEnvAttr">getEnvAttr</a><br></br>
+<a href="#setConnAttr">getConnAttr</a><br></br>
+<a href="#getStmtAttr">getStmtAttr</a><br></br>
+<a href="#init">init</a><br></br>
+<a href="#conn">conn</a><br></br>
+<a href="#exec">exec</a><br></br>
+<a href="#prepare">prepare</a><br></br>
+<a href="#bindParam">bindParam</a><br></br>
+<a href="#execute">execute</a><br></br>
+<a href="#nextResult">nextResult</a><br></br>
+<a href="#commit">commit</a><br></br>
+<a href="#rollback">rollback</a><br></br>
+<a href="#close">close</a><br></br>
+<a href="#fetch">fetch</a><br></br>
+<a href="#numFields">numFields</a><br></br>
+<a href="#numRows">numRows</a><br></br>
+<a href="#fieldType">fieldType</a><br></br>
+<a href="#fieldWidth">fieldWidth</a><br></br>
+<a href="#fieldNullable">fieldNullable</a><br></br>
+<a href="#fieldName">fieldName</a><br></br>
+<a href="#fieldPrecise">fieldPrecise</a><br></br>
+<a href="#fieldScale">fieldScale</a><br></br>
+<a href="#validStmt">validStmt</a><br></br>
+<a href="#stmtError">stmtError</a><br></br>
+<a href="#debug">debug</a></p>
+
+<p dir="ltr"><a href="#Diagnostics">Diagnostics</a></p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr"><span style="font-size:28px;"><a id="Introduction" name="Introduction">Introduction</a></span></h1>
+
+<p dir="ltr">DB2i add-on for Node.js is a JavaScript API set for DB2 database manipulation on IBM i. The add-on is shipped with Node.js and located in <strong>/QOpenSys/QIBM/ProdData/Node/os400/db2i/</strong>. It contains a binary module <strong>db2i.node</strong> in the bin directory and a library file <strong>db2.js</strong> in the lib directory. If you want to copy the add-on to other places, please remain the folder structure.</p>
+
+<p dir="ltr">To use the DB2i add-on, you only need to require the <strong>db2.js</strong> file in your source code.</p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr"><span style="font-size:28px;"><a id="Examples" name="Examples">Examples</a></span></h1>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="Basic Query" name="Basic Query">Basic Query</a></h2>
+
+<p dir="ltr">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr">try{</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.debug(true);&nbsp; // Enable Debug Mode if needed.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.init(function(){&nbsp; // Initialize the environment for database connections.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.serverMode(true); // Enable Server Mode if needed</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.conn(“*LOCAL”, “USER”, “PASSWORD”, function(){ // Connect to a database</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.autoCommit(true); // Enable the Auto Commit feature if needed.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.exec(“CREATE TABLE TEST.NAMEID (ID INTEGER, NAME VARCHAR(50), SALARY DECIMAL(8,2))”);&nbsp; // Create a new table in the database.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.exec(“INSERT INTO TEST.NAMEID VALUES (0, 'David', 999.99)”); // Insert a new record in the table.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; console.log(“There are %d rows affected.”, db.numRows()); // Get the execution result.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.exec(“SELECT * FROM TEST.NAMEID”, &nbsp;&nbsp;// Query the data in the new table.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function(jsonObj) {&nbsp; // Print the output in a readble way.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Result: %s”, JSON.stringify(jsonObj));</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var fieldNum = db.numFields();</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“There are %d fields in each row.”, fieldNum);</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Name | Length | Type | Precise | Scale | Null”);&nbsp; // Print all the fields information.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(var i = 0; i &lt; fieldNum; i++)</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“%s | %d | %d | %d | %d | %d”, db.fieldName(i), db.fieldWidth(i), db.fieldType(i), db.fieldPrecise(i), db.fieldScale(i), db.fieldNullable(i));</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; );</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.exec(“DROP TABLE TEST.NAMEID”);&nbsp; // Delete the example table from the database.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; db.close();&nbsp; // Release any used resource.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; } catch(e) {&nbsp; // Exception handler</p>
+
+<p dir="ltr">&nbsp; &nbsp; &nbsp; &nbsp; console.log(e);</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="Stored Procedure" name="Stored Procedure">Stored Procedure</a></h2>
+
+<p dir="ltr">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr">function testSimpleSp(sql) {</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; var ipc = “*NA”;</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; var ctl = “*here”;</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; var xmlIn =“&lt;?xml version='1.0'?&gt;&lt;script&gt;&lt;comment&gt;XML&lt;/comment&gt;&lt;/script&gt;“;</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; var xmlOut = ““;</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; try{</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.debug(true);&nbsp; // Enable Debug Mode if needed.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.init(function(){&nbsp; // Initialize the environment for database connections.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.serverMode(true); // Enable Server Mode if needed</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.conn(“*LOCAL”, “USER”, “PASSWORD”, function(){ // Connect to a database</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.autoCommit(true); // Enable the Auto Commit feature if needed.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.prepare(sql); // Prepare for the SQL statement.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.bindParam([&nbsp; // Bind parameters for each markers in the SQL statement.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ipc, db.SQL_PARAM_INPUT, 1],</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ctl, db.SQL_PARAM_INPUT, 1],</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [xmlIn, db.SQL_PARAM_INPUT, 0],</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [xmlOut, db.SQL_PARAM_OUTPUT, 0],</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]);</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.execute(function callback(out) {&nbsp; //Out is an array of each output parameters.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (i=0; i&lt;out.length; i++)</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Output Param[%d] = %s \n”, i, out[i]);</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();&nbsp; // Release any used resource.</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; } catch(e) {&nbsp; // Exception handler</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr">};</p>
+
+<p dir="ltr">testSimpleSp(“call QXMLSERV.iPLUG512K(?,?,?,?)”);</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr"><span style="font-size:28px;"><a id="Methods" name="Methods">Methods</a></span></h1>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="autoCommit" name="autoCommit">autoCommit</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Get or set the AUTOCOMMIT state for a database connection.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">autoCommit()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">autoCommit(Boolean OnOff)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;OnOff:</p>
+
+<p dir="ltr" style="margin-left: 40px;">false (default) -- The SQL statements are not automatically committed. If running with commitment control, changes must be explicitly committed or rolled back using either commit() or rollback().</p>
+
+<p dir="ltr" style="margin-left: 40px;">true -- each SQL statement is automatically committed as it is processed.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">For Syntax 1, it returns a Boolean value which indicates if AUTOCOMMIT is enabled for current connection if the operation is ended successfully.</p>
+
+<p dir="ltr"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetConnectAttr() / SQLSetConnectAttr()</p>
+
+<p dir="ltr"><strong>DB2 CLI Attributes:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_ATTR_AUTOCOMMIT</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the connection handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = true;</p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.conn(“*LOCAL”, function(){</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.autoCommit(mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.autoCommit()) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("Failed to set Auto Commit on. ");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode = false;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.autoCommit(mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.autoCommit()) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("Failed to set Auto Commit off.");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="serverMode" name="serverMode">serverMode</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Get or set the Server Mode state for a database connection. The reason for running in SQL server mode is that many applications need to act as database servers. This means that a single job performs SQL requests on behalf of multiple users. Without using SQL server mode, applications might encounter one or more of the following limitations:</p>
+
+<ul dir="ltr">
+	<li>
+	<p>A single job can have only one commit transaction per activation group.</p>
+	</li>
+	<li>
+	<p>A single job can be connected to a relational database (RDB) only once.</p>
+	</li>
+	<li>
+	<p>All SQL statements run under the user profile of the job, regardless of the user ID passed on the connection.</p>
+	</li>
+</ul>
+
+<p dir="ltr" style="margin-left: 40px;">SQL server mode circumvents these limitations by routing all SQL statements to separate jobs. Each connection runs in its own job. The system uses prestart jobs named QSQSRVR in the QSYSWRK subsystem or a selected subsystem to minimize the startup time for each connection.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">serverMode()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">serverMode(Boolean OnOff)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;OnOff:</p>
+
+<p dir="ltr" style="margin-left: 40px;">false (default) -- DB2 for i CLI processes the SQL statements of all connections within the same job. All changes compose a single transaction. This is the default mode of processing.</p>
+
+<p dir="ltr" style="margin-left: 40px;">true -- DB2 for i CLI processes the SQL statements of each connection in a separate job. This allows multiple connections to the same data source, possibly with different user IDs for each connection. It also separates the changes made under each connection handle into its own transaction. This allows each connection handle to be committed or rolled back, without impacting pending changes made under other connection handles.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">For Syntax 1, it returns a Boolean value indicating if the program is running under Server Mode.</p>
+
+<p dir="ltr"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetStmtAttr() / SQLSetEnvAttr()</p>
+
+<p dir="ltr"><strong>DB2 CLI Attributes:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_ATTR_SERVER_MODE</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the environment handler.</p>
+
+<p dir="ltr" style="margin-left: 40px;">*For Syntax 1, before making the initial connection.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = true;</p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init( function(){</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.serverMode(mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.serverMode()) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Failed to set Server Mode on.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="cursorType" name="cursorType">cursorType</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Specifies the behavior of cursors opened for this statement handle.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">cursorType()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">cursorType(int CursorType)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;CursorType:</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_CURSOR_FORWARD_ONLY (default) -- Cursors are not scrollable, and the scrolling feature in the fetch() function cannot be used against them.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_CURSOR_DYNAMIC -- Cursors are scrollable. The scrolling feature in the fetch() function can be used to retrieve data from these cursors.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">For Syntax 1, it returns an integer value indicating current cursor type.</p>
+
+<p dir="ltr"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetStmtAttr() / SQLSetStmtAttr()</p>
+
+<p dir="ltr"><strong>DB2 CLI Attributes:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_ATTR_CURSOR_TYPE</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the statement handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = db.SQL_CURSOR_DYNAMIC;</p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.conn("*LOCAL");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.cursorType(mode);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; if(mode != db.cursorType()) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Failed to set Cursor Type.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; mode = db.SQL_CURSOR_FORWARD_ONLY;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.cursorType(mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; if(mode != db.cursorType()) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Failed to set Cursor Type.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="setEnvAttr" name="setEnvAttr">setEnvAttr</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Sets an environment attribute for the current environment.</p>
+
+<p dir="ltr" style="margin-left: 40px;">In environments where the current application may exist in the same job as other applications using CLI, connections attributes should be used instead of environment attributes. Otherwise, setting environment attributes may cause the other application to behave unexpectedly. Ideally, the only environment attributes that should be used are SQL_ATTR_ENVHNDL_COUNTER and SQL_ATTR_SERVER_MODE.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">setEnvAttr(int Attribute, int/string Value)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the environment attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsenva.htm%23rzadpfnsenva__tbenva">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Value:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Appropriate value for Attribute. Value can be a string or a numeric value depending on different attribute.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLSetEnvAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the environment handler.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Before making the initial connection.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = db.SQL_TRUE;</p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init(function(){</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.setEnvAttr(db.SQL_ATTR_ENVHNDL_COUNTER, mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.getEnvAttr(db.SQL_ATTR_ENVHNDL_COUNTER)) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log(“Failed to set Environment Attribute.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode = db.SQL_FALSE;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.setEnvAttr(db.SQL_ATTR_ENVHNDL_COUNTER, mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.getEnvAttr(db.SQL_ATTR_ENVHNDL_COUNTER)) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log(“Failed to set Environment Attribute.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 31.5pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="setConnAttr" name="setConnAttr">setConnAttr</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Set connection attributes.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">setConnAttr(int Attribute, int/string Value)</p>
+
+<p dir="ltr"><strong>Parameter</strong> Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the connection attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsconx.htm%23rzadpfnsconx__tbcono">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Parameter</strong> Value:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Depending on the Attribute, this can be an integer value, or a character string.</p>
+
+<p dir="ltr"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLSetConnectAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the connection handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = "MYLIB";</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.conn("*LOCAL", function(){</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.setConnAttr(db.SQL_ATTR_DBC_DEFAULT_LIB , mode);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mode != db.getConnAttr(db.SQL_ATTR_DBC_DEFAULT_LIB )) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">console.log(“Failed to set Connection Attribute.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; } catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 31.5pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="setStmtAttr" name="setStmtAttr">setStmtAttr</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Set an attribute of a specific statement handle. To set an option for all statement handles associated with a connection handle, the application can call setConnAttr().</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">setStmtAttr(int Attribute, int/string Value)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the statement attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsstma.htm%23rzadpfnsstma__tbstmto">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Value:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Depending on the Attribute, this can be an integer value, or a character string.</p>
+
+<p dir="ltr"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLSetStmtAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the statement handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">var db = require('/QOpenSys/QIBM/ProdData/Node/os400/db2i/lib/db2');</p>
+
+<p dir="ltr" style="margin-left: 40px;">var mode = db.SQL_TRUE;</p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.conn("*LOCAL");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.setStmtAttr(db.SQL_ATTR_FOR_FETCH_ONLY, mode);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; if(mode != db.getStmtAttr(db.SQL_ATTR_FOR_FETCH_ONLY)) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Failed to set Statement Attribute.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; mode = db.SQL_FALSE;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.setStmtAttr(db.SQL_ATTR_FOR_FETCH_ONLY, mode);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; if(mode != db.getStmtAttr(db.SQL_ATTR_FOR_FETCH_ONLY)) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(“Failed to set Statement Attribute.”);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; }</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="getEnvAttr" name="getEnvAttr">getEnvAttr</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the current settings for the specified environment attribute.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">getEnvAttr(int Attribute)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the environment attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsenva.htm%23rzadpfnsenva__tbenva">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns the attribute option in the format of an integer or a string depending on the attribute type.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetEnvAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the environment handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the example of <a href="#setEnvAttr">setEnvAttr</a>.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="getConnAttr" name="getConnAttr">getConnAttr</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the current settings for the specified connection option</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">getConnAttr(int Attribute)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the connection attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsconx.htm%23rzadpfnsconx__tbcono">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns the attribute option in the format of an integer or a string depending on the attribute type.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetConnectAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the connection handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the example of <a href="#setConnAttr">setConnAttr</a>.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="getStmtAttr" name="getStmtAttr">getStmtAttr</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the current settings for the specified connection option</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">getStmtAttr(int Attribute)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Attribute is the connection attribute to set. Refer to <a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsstma.htm%23rzadpfnsstma__tbstmto">this table</a> for more details.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns the attribute option in the format of an integer or a string depending on the attribute type.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetStmtAttr</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After allocating the statement handler.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the example of <a href="#setStmtAttr">setStmtAttr</a>.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="init" name="init">init</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Prepares an environment for database connections.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">init()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">init(function Callback)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a callback function to set any environment attributes.</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">*It is recommended to invoke the setEnvAttr() function or enabling Server Mode in this callback function.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLAllocEnv</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Before calling the conn() function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="conn" name="conn">conn</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Establishes a connection to the target database. The application can optionally supply a target SQL database, an authorization name, and an authentication string.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">conn(string Database)</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">conn(string Database, function Callback)</p>
+
+<p dir="ltr"><strong>Syntax 3:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">conn(string Database, string User, string Password)</p>
+
+<p dir="ltr"><strong>Syntax 4:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">conn(string Database, string User, string Password, function Callback)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Database:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Database is the name or alias name of the database. You may issue CL command WRKRDBDIRE to get the Entry names. Or simply use “*LOCAL” to connect to the local database.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;User:</p>
+
+<p dir="ltr" style="margin-left: 40px;">User is the authorization name (user identifier). It is a user profile on IBM i.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Password:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Password is the authentication string (password). It is the password of above user profile.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a callback function to set connection attributes.</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">* It is recommended to invoke the setConnAttr() function or enabling Auto Commit in this callback function.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLConnect</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the init() function.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Before calling the exec() or prepare() function.</p>
+
+<p dir="ltr" style="margin-left: 40px;">* It is not valid to use setStmtAttr() or setting Cursor Type before calling this function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="exec" name="exec">exec</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Directly runs the specified SQL statement. The statement can only be processed once. Also, the connected database server must be able to prepare the statement.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">exec(string SQL)</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">exec(string SQL, function Callback(JsonObj))</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL is the SQL statement string.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback(JsonObj):</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a callback function to process the result set of the SQL statement for callers. JsonObj is the result set of the SELECT SQL statement. It is in the JSON format.</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">* If the SQL statement is UPDATE, INSERT, MERGE, SELECT from INSERT, or DELETE statement, nothing will be returned and it is recommended to use Syntax 1. And user can issue the numRows() function to get the affected row number.</p>
+
+<p dir="ltr" style="margin-left: 40px;">* It is recommended to invoke the numFields(), numRows(), fieldName() and other result set related functions in this callback function. Because they rely on the temporal result set in memory. After running exec() the result set will be destroyed and cleaned up.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLExecDirect</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the conn() function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="prepare" name="prepare">prepare</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Associates an SQL statement with the input statement handle and sends the statement to the DBMS to be prepared. The application can reference this prepared statement by passing the statement handle to other functions.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">prepare(string SQL)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL is the SQL statement string.</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">* If the statement handler has been used with a SELECT statement, closeCursor() must be called to close the cursor, before calling prepare() again.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLPrepare</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the conn() function.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Before calling the execute() or bindParam() function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Stored Procedure">Stored&nbsp;Procedure</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="bindParam" name="bindParam">bindParam</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Associate (bind) parameter markers in an SQL statement to application variables. Data is transferred from the application to the Database Management System (DBMS) when execute() is called. Data conversion might occur when the data is transferred.</p>
+
+<p dir="ltr" style="margin-left: 40px;">This function must also be used to bind application storage to a parameter of a stored procedure where the parameter can be input, output.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">bindParam(array ParamList)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;ParamList:</p>
+
+<p dir="ltr" style="margin-left: 40px;">ParamList is a java script array representing the binding parameter list. Each parameter has three attributes which are also represented as an array. The three attributes are Value, In/Out Type and Indicator. Value can be an integer value or a string. In/Out Type is an integer. If Value is an input value, please set it to 0. Otherwise, set it to 1. Indicator is an integer flag to tell the function how to process some special types of parameters. Different type of Value requires corresponding Indicator. Please refer to below table for details.</p>
+
+<table border="1" cellpadding="0" cellspacing="0" dir="ltr" style="width: 422px;">
+	<tbody>
+		<tr>
+			<td style="width: 70px;">
+			<p>Indicator</p>
+			</td>
+			<td style="width: 169px;">
+			<p>Data Type</p>
+			</td>
+			<td style="width: 175px;">
+			<p>SQL Type</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 70px;">
+			<p>0</p>
+			</td>
+			<td style="width: 169px;">
+			<p>CLOB String</p>
+			</td>
+			<td style="width: 175px;">
+			<p>SQL_C_CHAR</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 70px;">
+			<p>1</p>
+			</td>
+			<td style="width: 169px;">
+			<p>Null Terminated String</p>
+			</td>
+			<td style="width: 175px;">
+			<p>SQL_C_CHAR</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 70px;">
+			<p>2</p>
+			</td>
+			<td style="width: 169px;">
+			<p>Integer</p>
+			</td>
+			<td style="width: 175px;">
+			<p>SQL_C_LONG</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 70px;">
+			<p>3</p>
+			</td>
+			<td style="width: 169px;">
+			<p>NULL</p>
+			</td>
+			<td style="width: 175px;">
+			<p>SQL_C_DEFAULT</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLBindParameter</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the prepare() function.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Before calling the execute() or bindParam() function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Stored Procedure">Stored&nbsp;Procedure</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="execute" name="execute">execute</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Runs a statement that was successfully prepared using prepare() once or multiple times. The statement is processed with the current values of any application variables that were bound to parameter markers by bindParam().</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">execute()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">execute(function Callback(OutParamList))</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback(OutParamList):</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a callback function to process the output parameters of the parameter markers. OutParamList is a list of the output parameters. It is in the java script array format.</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">* If the statement also return a result set, user can issue the fetch() function to retrieve the data row by row.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLExecute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the prepare() function.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Stored Procedure">Stored&nbsp;Procedure</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="nextResult" name="nextResult">nextResult</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Determines whether there is more information available on the statement handle that has been associated with a stored procedure that is returning result sets.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">nextResult()</p>
+
+<p dir="ltr"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">* After completely processing the first result set, the application can call nextResult() to determine if another result set is available. If the current result set has unfetched rows, nextResult() discards them by closing the cursor.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLMoreResults</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the execute() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="commit" name="commit">commit</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Commit all changes to the database that have been made on the connection since connect time or the previous call to commit().</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">commit()</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLTransact</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the execute() or exec() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="rollback" name="rollback">rollback</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Rollback all changes to the database that have been made on the connection since connect time or the previous call to commit().</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">rollback()</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLTransact</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling the execute() or exec() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="close" name="close">close</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Ends the connection associated with the database connection handle and release all used handlers and resources. If Auto Commit is disabled, it will rollback all transactions before exit.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">close()</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLEndTran</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLFreeStmt</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLDisconnect</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLFreeConnect</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLFreeEnv</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">All the life cycle.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fetch" name="fetch">fetch</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Advances the cursor to the next row of the result set, and retrieves any bound columns. Or positions the cursor based on the requested orientation and then retrieves any bound columns.</p>
+
+<p dir="ltr"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fetch()</p>
+
+<p dir="ltr"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fetch(function Callback(Row))</p>
+
+<p dir="ltr"><strong>Syntax 3:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fetch(int Orient, int Offset)</p>
+
+<p dir="ltr"><strong>Syntax 4:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fetch(int Orient, int Offset, function Callback(Row))</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback(Row):</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a callback function to process the fetched row. Row is the fetched row represented in a key-value java script array.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Orient:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Orient sets the fetch orientation. The valid values are below:</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_ABSOLUTE:Move to the row specified by the Offset argument.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_FIRST:Move to the first row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_LAST:Move to the last row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_NEXT:Move to the row following the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_PRIOR:Move to the row preceding the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_FETCH_RELATIVE If Offset is:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Positive, advance the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Negative, back up the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px;">Zero, do not move the cursor.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Offset:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Offset is the row offset for relative positioning.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLFetch or SQLFetchScroll</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">try{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.conn("*LOCAL");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.prepare("SELECT LSTNAM, STATE FROM QIWS.QCUSTCDT");</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.execute();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; var rc;</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; do{</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rc = db.fetch(function callback(row) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(row);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; } while(rc != db.SQL_NO_DATA_FOUND);</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">} catch(e) {</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; db.close();</p>
+
+<p dir="ltr" style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; console.log(e);</p>
+
+<p dir="ltr" style="margin-left: 40px;">}</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="numFields" name="numFields">numFields</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the number of fields contained in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">numFields()</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating number of fields in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLNumResultCols</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="numRows" name="numRows">numRows</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the number of rows in a table affected by an UPDATE, INSERT, MERGE, SELECT from INSERT, or DELETE statement processed against the table.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">numRows()</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating number of rows affected by the operation.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLRowCount</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldType" name="fieldType">fieldType</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the data type of the indicated column in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldType(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating the data type of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldWidth" name="fieldWidth">fieldWidth</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the width of the indicated column in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldWidth(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating the width of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldNullable" name="fieldNullable">fieldNullable</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns if the indicated column in a result set can be NULL.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldNullable(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an Boolean value indicating if the indicated column in a result set can be NULL.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldName" name="fieldName">fieldName</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the name of the indicated column in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldName(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an string value indicating the name of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldPrecise" name="fieldPrecise">fieldPrecise</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the precision of the indicated column in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldPrecise(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating the precision of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldScale" name="fieldScale">fieldScale</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the scale of the indicated column in a result set.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">fieldScale(int Index)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating the scale of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLColAttribute</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="validStmt" name="validStmt">validStmt</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Checks if the SQL string is valid and interprets vendor escape clauses. If the original SQL string that is passed by the application contains vendor escape clause sequences, DB2 for i CLI returns the transformed SQL string that is seen by the data source (with vendor escape clauses either converted or discarded as appropriate).</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">validStmt(string Statement)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Statement:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Statement is a SQL string that needs to be checked and escaped.</p>
+
+<p dir="ltr"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">It returns an integer value indicating the scale of the specified column in the result set.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLNativeSql</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling conn() function</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">db.init();</p>
+
+<p dir="ltr" style="margin-left: 40px;">db.conn(conf.Database);</p>
+
+<p dir="ltr" style="margin-left: 40px;">console.log("Escaped string is : %s\n", db.validStmt("SELECT * FROM …"));</p>
+
+<p dir="ltr" style="margin-left: 40px;">db.close();</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="stmtError" name="stmtError">stmtError</a></h2>
+
+<p dir="ltr"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Returns the diagnostic information associated with the most recently called function for a particular statement, connection, or environment handler.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">stmtError(int hType, int Recno, function Callback(ErrMsg))</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;hType:</p>
+
+<p dir="ltr" style="margin-left: 40px;">hType indicates the handler type of diagnostic information. It can be following values:</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_HANDLE_ENV:Retrieve the environment diagnostic information</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_HANDLE_DBC:Retrieve the connection diagnostic information</p>
+
+<p dir="ltr" style="margin-left: 40px;">SQL_HANDLE_STMT:Retrieve the statement diagnostic information</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Recno:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Recno indicates which error should be retrieved. The first error record is number 1.</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;Callback(ErrMsg):</p>
+
+<p dir="ltr" style="margin-left: 40px;">Callback is a call back function to process the retrieved error message. ErrMsg is the retrieved error message. The information consists of a standardized SQLSTATE, the error code, and a text message.</p>
+
+<p dir="ltr"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">SQLGetDiagRec</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">After calling conn() function</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="debug" name="debug">debug</a></h2>
+
+<p dir="ltr"><strong>Description: </strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Print more detailed debugging information during execution.</p>
+
+<p dir="ltr"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">debug(boolean OnOff)</p>
+
+<p dir="ltr"><strong>Parameter</strong>&nbsp;OnOff:</p>
+
+<p dir="ltr" style="margin-left: 40px;">Default value is false. If it is true, the program will print more detailed information.</p>
+
+<p dir="ltr"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">All the life cycle.</p>
+
+<p dir="ltr"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px;">Refer to the <a href="#Basic Query">Basic&nbsp;Query</a> example.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr"><span style="font-size:28px;"><a id="Diagnostics" name="Diagnostics">Diagnostics</a></span></h1>
+
+<table border="1" cellpadding="0" cellspacing="0" dir="ltr" style="width: 361px;">
+	<tbody>
+		<tr>
+			<td style="width: 84px;">
+			<p>Error Code</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Meaning</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>0</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Success</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>-1</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Error</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>1</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Success with information</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8001</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter numbers</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8002</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter type</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8003</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter range</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8011</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Environment handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8012</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Connection handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8013</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Statement handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8014</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Result set is not ready.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p></div></body></html>

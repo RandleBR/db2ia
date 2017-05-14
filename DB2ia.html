@@ -1,0 +1,1525 @@
+<html><head><title>DB2 for i Access APIs - New</title><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" ><STYLE type="text/css">TABLE { border-collapse: collapse; border-top: 1px; border-left: 1px; border-style: solid; margin: 4px; }TD, TH { border-bottom: 1px; border-right: 1px; border-style: solid; padding: 4px; }TH { background-color: #D8D8D8; }</STYLE></head><body><div><p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a id="top" name="top"></a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-size: 28px;">DB2 for i Access APIs</span></h1>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Introduction">Introduction</a></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Examples">Examples</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Basic Query">Basic&nbsp;Query</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Stored Procedure">Stored&nbsp;Procedure</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a lconnwikiparamwikipage="Concurrent Query" lconnwikimacro="wikilink" href="/developerworks/community/wikis/home/wiki/IBM%20i%20Technology%20Updates/page/Concurrent%20Query">Concurrent&nbsp;Query</a></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Methods">Methods</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#setConnAttr">setConnAttr</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#getConnAttr">getConnAttr</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#conn">conn</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#disconn">disconn</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#close">close</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#debug">debug</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#validStmt">validateStmt</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#setStmtAttr">setStmtAttr</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#getStmtAttr">getStmtAttr</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#exec">exec</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#execSync">execSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#prepare">prepare</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#prepareSync">prepareSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#bindParam">bindParam</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#bindParamSync">bindParamSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#execute">execute</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#executeSync">executeSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#nextResult">nextResult</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#commit">commit</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#rollback">rollback</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#close">close</a><a href="#closeCursor">Cursor</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#stmt_close">close</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fetch">fetch</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fetchSync">fetchSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fetchAll">fetchAll</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fetchAllSync">fetchAllSync</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#numFields">numFields</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#numRows">numRows</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldType">fieldType</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldWidth">fieldWidth</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldNullable">fieldNullable</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldName">fieldName</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldPrecise">fieldPrecise</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#fieldScale">fieldScale</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#validStmt">validStmt</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#stmtError">stmtError</a></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#debug">debug</a></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a href="#Diagnostics">Diagnostics</a></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-size: 28px;"><a id="Introduction" name="Introduction">Introduction</a></span></h1>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The new DB2 add-on for Node.js is a JavaScript API set for DB2 database manipulation on IBM i. The add-on is shipped with Node.js and located in /QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/. It contains a new non-blocking driver <strong>db2ia.node</strong> and a deprecated blocking driver <strong>db2i.node</strong> in the <strong>bin</strong> directory, and their respective library file <strong>db2a.js</strong> and <strong>db2.js</strong> in the <strong>lib</strong> directory. For the usage of the old synchronized&nbsp;<strong>db2i</strong> add-on, please refer to the document – <a wiki="IBM i Technology Updates" href="https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20i%20Technology%20Updates/page/DB2%20for%20i%20access%20APIs" id="wikiLink1471506930137" page="DB2 for i access APIs">https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20i%20Technology%20Updates/page/DB2%20for%20i%20access%20APIs</a></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">To use the DB2 add-on, you only need to require the <strong>db2a.js</strong> file in your source code.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Note</strong>: The new DB2 Add-on requires Node.js v4, please check the effective Node.js by command ‘node -v’ first.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-size: 28px;"><a id="Examples" name="Examples">Examples</a></span></h1>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="Basic Query" name="Basic Query">Basic Query</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><span style="text-indent: -35.45pt;">var db = require('/QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/lib/db2a');</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">var sql = "SELECT STATE,LSTNAM FROM QIWS.QCUSTCDT";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">var dbconn = new db.dbconn();&nbsp; // Create a connection object.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">dbconn.conn("*LOCAL");&nbsp; // Connect to a database.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">var stmt = new db.dbstmt(dbconn);&nbsp; // Create a statement object of the connection.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">stmt.exec(sql, function(result) {</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; console.log("Result: %s", JSON.stringify(result));</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;var fieldNum = stmt.numFields();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;console.log("There are %d fields in each row.", fieldNum);</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;console.log("Name | Length | Type | Precise | Scale | Null");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;for(var i = 0; i &lt; fieldNum; i++)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;console.log("%s | %d | %d | %d | %d | %d", stmt.fieldName(i), stmt.fieldWidth(i), stmt.fieldType(i), stmt.fieldPrecise(i), stmt.fieldScale(i), stmt.fieldNullable(i));</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp;</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;stmt.close();&nbsp; // Clean up the statement object.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dbconn.disconn();&nbsp; // Disconnect from the database.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dbconn.close();&nbsp; // Clean up the connection object.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family:Times New Roman, Times, serif"><span style="font-size:10.5pt;">});</span></span></p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="Stored Procedure" name="Stored Procedure">Stored Procedure</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var db = require('/QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/lib/db2a');</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var sql = "call QXMLSERV.iPLUG512K(?,?,?,?)";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var dbconn = new db.dbconn();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">dbconn.conn("*LOCAL");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var stmt = new db.dbstmt(dbconn);</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var ipc = "*NA";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var ctl = "*here";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var xmlIn ="&lt;xmlservice&gt;&lt;sh&gt;system 'wrkactjob'&lt;/sh&gt;&lt;/xmlservice&gt;";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var xmlOut = "";</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">stmt.prepare(sql, function(){</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp;stmt.bindParam([</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [ipc, db.SQL_PARAM_INPUT, 1],</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [ctl, db.SQL_PARAM_INPUT, 1],</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [xmlIn, db.SQL_PARAM_INPUT, 0],</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [xmlOut, db.SQL_PARAM_OUTPUT, 0],</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; ], function(){</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stmt.execute(function(out) {&nbsp; //out is an array of the output parameters.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for(var i=0; i&lt;out.length; i++)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log("Output Param[%d] = %s \n", i, out[i]);</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stmt.close();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dbconn.disconn();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dbconn.close();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;});</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; });</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">});</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><a id="Concurrent Query" name="Concurrent Query">Concurrent Query</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var dba = require('/QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/lib/db2a');</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">v<span style="font-size: 12px; font-weight: normal;">ar dbconn = new dba.dbconn();</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">dbconn.conn("*LOCAL");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var sqlA = new dba.dbstmt(dbconn);</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var sqlB = new dba.dbstmt(dbconn);</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">console.log("Execute A.");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">sqlA.exec(sql, function() {</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; console.log("Execute A Done.");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; sqlA.close();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">});</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">console.log("Execute B.");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">sqlB.exec(sql, function() {</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; console.log("Execute B Done.");</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; sqlB<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">});</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">setTimeout(function(){</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dbconn.disconn();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dbconn.close();</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family:Times New Roman, Times, serif"><span style="font-size:10.5pt;">},1000);&nbsp; //Sleep for 1 second to wait for both queries done.</span></span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-size: 28px;"><a id="Class dbconn" name="Class dbconn">Class dbconn</a></span></h1>
+
+<p dir="ltr">The <strong>dbconn</strong> class represents a connection object. It can connect to a database, and disconnect from it. Please use the <strong>new</strong> operator to instantiate it and the <strong>delete</strong> function to clean up.</p>
+
+<p dir="ltr" style="text-align: right;">&nbsp;</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="setConnAttr" name="setConnAttr">setConnAttr</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Set connection attributes.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">setConnAttr(int Attribute, int/string Value)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Attribute is the connection attribute to set. Refer to&nbsp;<a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsconx.htm%23rzadpfnsconx__tbcono">this table</a>&nbsp;for more details.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Value:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Depending on the Attribute, this can be an integer value, or a character string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLSetConnectAttr</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 27.866666793823242px;">Before connecting to a database.</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;"><span style="font-family:Times New Roman, Times, serif"><span style="font-size: 10.5pt;">The&nbsp;<strong>Auto Commit</strong>&nbsp;feature is automatically enabled.</span></span></p>
+
+<p dir="ltr" style="margin-left: 31.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="getConnAttr" name="getConnAttr"><span style="text-indent: -21.25pt;">getConnAttr</span></a></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Description:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Returns the current settings for the specified connection option</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Syntax:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">getConnAttr(int </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Attribute</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">)</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="text-indent: 20.9pt; font-size: 12px;">Parameters </strong><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Attribute</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">:</span></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Attribute</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;"> is the connection attribute to set. </span><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Refer to&nbsp;</span><a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsconx.htm%23rzadpfnsconx__tbcono" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">this table</a><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;for more details.</span></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Return Object:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">It returns the attribute option in the format of an </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">integer </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">or a </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">string </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">depending on the attribute type.</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">DB2CLI API:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">SQLGetConnectAttr</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Valid Scope:</strong></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><span style="font-family:Times New Roman, Times, serif"><span style="font-size:10.5pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After instantiated the connection object.</span></span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="conn" name="conn"><span style="text-indent: -21.25pt;">conn</span></a></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Description:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Establishes a connection to the target database. The application can optionally supply a target SQL database, an authorization name, and an authentication string.</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Syntax 1:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">conn(string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Database</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">)</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Syntax 2:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">conn(string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Database</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, function </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Callback</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">)</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="text-indent: -35.45pt; font-size: 12px;">Syntax 3:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">conn(string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Database</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">User</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Password</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">)</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="text-indent: -35.45pt; font-size: 12px;">Syntax 4:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">conn(string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Database</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">User</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, string </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Password</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">, function </span><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Callback</em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">)</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Parameters </strong><em style="font-size: 12px; font-weight: normal;">Database</em><span style="font-size: 12px; font-weight: normal;">:</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Database </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">is the name or alias name of the database.</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Parameters </strong><em style="font-size: 12px; font-weight: normal;">User</em><span style="font-size: 12px; font-weight: normal;">:</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">User </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">is the authorization name (user identifier).</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Parameters </strong><em style="font-size: 12px; font-weight: normal;">Password</em><span style="font-size: 12px; font-weight: normal;">:</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Password </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">is the authentication string (password).</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Parameters </strong><em style="font-size: 12px; font-weight: normal;">Callback</em><span style="font-size: 12px; font-weight: normal;">:</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><em style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Callback </em><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">is a callback function running after the connection established.</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">DB2CLI API:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">SQLConnect</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Valid Scope:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Before calling the </span><strong style="text-indent: 20.9pt; font-size: 12px;">exec() </strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">or </span><strong style="text-indent: 20.9pt; font-size: 12px;">prepare() </strong><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">function.</span></h2>
+
+<p dir="ltr" style="margin-left: 31.5pt; text-indent: 20.9pt; text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right; text-indent: -47.266666412353516px;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="disconn" name="disconn"><span style="text-indent: -21.25pt;">disconn</span></a></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Description:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">Ends the connection associated with the database connection handle.&nbsp;</span><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">After calling this function, either call conn() to connect to another database, or delete the&nbsp;</span><span style="font-size: 12px; font-weight: normal; text-indent: 20.9pt;">connection object.</span></h2>
+
+<h2 dir="ltr" style="margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong><span style="font-size: 12px;">Syntax:</span></strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">disconn()</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">DB2CLI API:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">SQLDisconnect</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Valid Scope:</strong></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="font-family:Times New Roman, Times, serif">After calling the </span><strong style="font-size: 10.5pt; font-family: 'Times New Roman', Times, serif;">conn()</strong><span style="font-family:Times New Roman, Times, serif"> function.</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;">&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 31.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top" style="text-indent: -47.266666412353516px;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="text-indent: -28.33333396911621px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt;">&nbsp;</h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="close" name="close">close</a></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Description:</strong></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;">Frees the connection object. All DB2 for i resources associated with&nbsp;the connection object are freed. disconn() must be called before calling this function.</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong><span style="font-size: 12px;">Syntax:</span></strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">close()</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">DB2CLI API:</strong></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt; font-size: 12px; font-weight: normal;">SQLFreeConnect</span></h2>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong style="font-size: 12px;">Valid Scope:</strong></h2>
+
+<p dir="ltr" style="margin: 1pt 10.5pt 1pt 80px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: -35.45pt;"><span style="font-family: 'Times New Roman', Times, serif;">After calling the<strong> dis</strong></span><strong style="font-size: 10.5pt; font-family: 'Times New Roman', Times, serif;">conn()</strong><span style="font-family: 'Times New Roman', Times, serif;">&nbsp;function.</span></p>
+
+<p dir="ltr" style="text-align: right;"><a href="#top" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right; text-indent: -47.266666412353516px;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="debug" name="debug">debug</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Print more detailed debugging information during execution.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">debug(boolean OnOff)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;OnOff:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Default value is false. If it is true, the program will print more detailed information.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">All the life cycle.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr"><a id="validStmt" name="validStmt">validStmt</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt;">Checks if the SQL string is valid and interprets vendor escape clauses. If the original SQL string that is passed by the application contains vendor escape clause sequences, DB2 for i CLI returns the transformed SQL string that is seen by the data source (with vendor escape clauses either converted or discarded as appropriate).</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt;">validStmt(string </span><em style="text-indent: 20.9pt;">Statement</em><span style="text-indent: 20.9pt;">)</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>Parameters </strong><em>Statement</em>:</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><em style="text-indent: 20.9pt;">Statement </em><span style="text-indent: 20.9pt;">is a SQL string that needs to be checked and escaped.</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt;">It returns an </span><em style="text-indent: 20.9pt;">integer </em><span style="text-indent: 20.9pt;">value indicating the scale of the specified column in the result set.</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="text-indent: 20.9pt;">SQLNativeSql</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 80px; text-indent: -35.45pt;"><span style="font-family:Times New Roman, Times, serif"><span style="font-size:10.5pt;">After calling <strong>conn</strong>() function</span></span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt; text-align: right;"><a href="#top" style="text-decoration: underline; color: rgb(5, 56, 107); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right; text-indent: 27.866666793823242px;">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="Class dbstmt" name="Class dbstmt">Class dbstmt</a></h1>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;">The dbstmt class represents a SQL statement object along with its query result set. The construct function accepts an input parameter of a connection object. One connection object can derive many statement objects. Please use the new operator to instantiate it and the delete function to clean up.</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="setStmtAttr" name="setStmtAttr">setStmtAttr</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Set an attribute of a specific statement handle. To set an option for all statement handles associated with a connection handle, the application can call setConnAttr().</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">setStmtAttr(int Attribute, int/string Value)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Attribute is the statement attribute to set. Refer to&nbsp;<a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsstma.htm%23rzadpfnsstma__tbstmto">this table</a>&nbsp;for more details.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Value:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Depending on the Attribute, this can be an integer value, or a character string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2 CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLSetStmtAttr</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After allocating the statement handler.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;">&nbsp;</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="getStmtAttr" name="getStmtAttr">getStmtAttr</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the current settings for the specified connection option</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">getStmtAttr(int Attribute)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Attribute:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Attribute is the connection attribute to set. Refer to&nbsp;<a href="http://www-01.ibm.com/support/knowledgecenter/ssw_ibm_i_71/cli/rzadpfnsstma.htm%23rzadpfnsstma__tbstmto">this table</a>&nbsp;for more details.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns the attribute option in the format of an integer or a string depending on the attribute type.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLGetStmtAttr</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After allocating the statement handler.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;">&nbsp;</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="exec" name="exec">exec</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Directly runs the specified SQL statement. The statement can only be processed once. Also, the connected database server must be able to prepare the statement. This is a non-blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">exec(string SQL, function Callback(JsonObj))</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">ex<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">ec(string SQL, function Callback(JsonObj, Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL is the SQL statement string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(JsonObj [, Error]):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the result set of the SQL statement for callers. JsonObj is the result set of the SELECT SQL statement. It is in the JSON format. Error is the error message when error happens. It's a optional parameter.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLExecDirect</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the conn() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="execSync" name="execSync">execSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of exec(). This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">exec(string SQL)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">exec(string SQL, function Callback(JsonObj))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL is the SQL statement string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(JsonObj):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the result set of the SQL statement for callers. JsonObj is the result set of the SELECT SQL statement. It is in the JSON format.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<div dir="ltr" style="margin-left: 40px;">* If the SQL statement is UPDATE, INSERT, MERGE, SELECT from INSERT, or DELETE statement, nothing will be returned and it is recommended to use Syntax 1. And user can issue the numRows() function to get the affected row number.<br></br>
+* It is recommended to invoke the numFields(), numRows(), fieldName() and other result set related functions in this callback function. Because they rely on the temporal result set in memory. After running execSync() the result set will be destroyed and cleaned up.</div>
+
+<div dir="ltr">&nbsp;</div>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLExecDirect</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the conn() function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Examle:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var db = require('/QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/lib/db2a');<br></br>
+var sql = "SELECT STATE FROM QIWS.QCUSTCDT";<br></br>
+var dbconn = new db.dbconn(); &nbsp;// Create a connection object.<br></br>
+dbconn.conn("*LOCAL"); &nbsp;// Connect to a database.<br></br>
+var stmt = new db.dbstmt(dbconn); &nbsp;// Create a statement object of the connection.<br></br>
+stmt.execSync(sql, function(result) {<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;console.log("Result: %s", JSON.stringify(result));<br></br>
+});<br></br>
+stmt<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;<br></br>
+conn.disconn();<br></br>
+conn<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="prepare" name="prepare">prepare</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Associates an SQL statement with the input statement handle and sends the statement to the DBMS to be prepared. The application can reference this prepared statement by passing the statement handle to other functions.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">prepare(string SQL, function Callback())</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">prepare(string SQL, function Callback(Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL is the SQL statement string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback([Error]):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function. Error is an optional parameter of the callback function. It is the error message when error happens.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">* If the statement handler has been used with a SELECT statement, closeCursor() must be called to close the cursor, before calling prepare() again.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLPrepare</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the conn() function.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Before calling the execute() or bindParam() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr"><a id="prepareSync" name="prepareSync">prepareSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of prepare(). This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">prepareSync(string SQL)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">prepareSync(string SQL, function Callback())</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;SQL:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL is the SQL statement string.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback():</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">* If the statement handler has been used with a SELECT statement, closeCursor() must be called to close the cursor, before calling prepareSync() again.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLPrepare</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the conn() function.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Before calling the executeSync() or bindParamSync() function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">var db = require('/QOpenSys/QIBM/ProdData/OPS/Node4/os400/db2i/lib/db2a');<br></br>
+var sql = "SELECT STATE FROM QIWS.QCUSTCDT";<br></br>
+var dbconn = new db.dbconn(); &nbsp;// Create a connection object.<br></br>
+dbconn.conn("*LOCAL"); &nbsp;// Connect to a database.<br></br>
+var stmt = new db.dbstmt(dbconn); &nbsp;// Create a statement object of the connection.<br></br>
+stmt.prepareSync("call QXMLSERV.iPLUG512K(?,?,?,?)");<br></br>
+stmt.bindParamSync([<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;["*NA", db.SQL_PARAM_INPUT, 1],<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;["*here", db.SQL_PARAM_INPUT, 1],<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;["&lt;xmlservice&gt;&lt;/xmlservice&gt;", db.SQL_PARAM_INPUT, 0],<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;["", db.SQL_PARAM_OUTPUT, 0],<br></br>
+]);<br></br>
+stmt.executeSync(function callback(out) { &nbsp;//out is an array of the output parameters.<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;console.log("Result: %s", JSON.stringify(out));<br></br>
+});<br></br>
+stmt<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;<br></br>
+conn.disconn();<br></br>
+conn<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="bindParam" name="bindParam">bindParam</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Associate (bind) parameter markers in an SQL statement to application variables. Data is transferred from the application to the Database Management System (DBMS) when execute() is called. Data conversion might occur when the data is transferred.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This function must also be used to bind application storage to a parameter of a stored procedure where the parameter can be input, output.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a non-blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">bindParam(array ParamList, function Callback())</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">bindParam(array ParamList, function Callback(Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;ParamList:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">ParamList is a java script array representing the binding parameter list. Each parameter has three attributes which are also represented as an array. The three attributes are Value, In/Out Type and Indicator. Value can be an integer value or a string. In/Out Type is an integer. If Value is an input value, please set it to 0. Otherwise, set it to 1. Indicator is an integer flag to tell the function how to process some special types of parameters. Different type of Value requires corresponding Indicator. If the parameter is CLOB string, set it to 0, if it is a NTS string, set it to 1, if it is an integer, set it to 2.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameters</strong> Callback([Error]):&nbsp;</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">Callback is a callback function. Error is an optional parameter. It is the error message when error happens.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLBindParameter</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">In the callback function of the prepare() function.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top" style="text-align: right; text-indent: 20.9pt;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="bindParamSync" name="bindParamSync">bindParamSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of bindParam().&nbsp;<br></br>
+This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">bindParamSync(array ParamList)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">bindParamSync(array ParamList, function Callback())</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;ParamList:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">ParamList is a java script array representing the binding parameter list. Each parameter has three attributes which are also represented as an array. The three attributes are Value, In/Out Type and Indicator. Value can be an integer value or a string. In/Out Type is an integer. If Value is an input value, please set it to 0. Otherwise, set it to 1. Indicator is an integer flag to tell the function how to process some special types of parameters. Different type of Value requires corresponding Indicator. If the parameter is CLOB string, set it to 0, if it is a NTS string, set it to 1, if it is an integer, set it to 2.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameters</strong>&nbsp;Callback():&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLBindParameter</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the prepareSync() function.<br></br>
+Before calling the executeSync() function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">See the example of prepareSync().</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top" style="text-indent: 20.9pt;">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="execute" name="execute">execute</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Runs a statement that was successfully prepared using prepare() once or multiple times. The statement is processed with the current values of any application variables that were bound to parameter markers by bindParam().</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a non-blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">execute(<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">function Callback()</span>)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">execute(function Callback(Out))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 3:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">execute(function Callback(Error))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(Out):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function. If the output contains parameters of the parameter markers, Out is a list of the output parameters in the java script array format. Otherwise, the callback function takes no output parameter and is only for fetching the result set. Error is the error message when error happens.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLExecute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">In the callback function of the prepare() or bindParam() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr"><a id="executeSync" name="executeSync">executeSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of execute().&nbsp;<br></br>
+This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">executeSync()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">execute(function Callback(OutParamList))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">OutParamList</span>):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the output parameters of the parameter markers. OutParamList is a list of the output parameters. It is in the java script array format.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">* If the statement also return a result set, user can issue the fetch() function to retrieve the data row by row.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLExecute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the prepareSync() function.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">See the example of prepareSync().</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="nextResult" name="nextResult">nextResult</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Determines whether there is more information available on the statement handle that has been associated with a stored procedure that is returning result sets.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">nextResult()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Comments:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">* After completely processing the first result set, the application can call nextResult() to determine if another result set is available. If the current result set has unfetched rows, nextResult() discards them by closing the cursor.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLMoreResults</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the execute() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="commit" name="commit">commit</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Commit all changes to the database that have been made on the connection since connect time or the previous call to commit().</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">commit()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLTransact</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the execute() or exec() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="rollback" name="rollback">rollback</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Rollback all changes to the database that have been made on the connection since connect time or the previous call to commit().</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">rollback()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLTransact</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling the execute() or exec() function.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="closeCursor" name="closeCursor">closeCursor</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong>&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Calling closeCursor() closes any cursor associated with the dbstmt object and discards any pending results. If no open cursor is associated with the dbstmt object, the function has no effect. If the dbstmt object references a stored procedure that has multiple result sets, the closeCursor() closes only the current result set. Any additional result sets remain open and usable.<br></br>
+If you want to reuse the dbstmt object, please call closeCursor() before calling exec() or prepare() for another SQL statement. Otherwise, you just need to call delete to completely remove it.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">closeCursor()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">SQLCloseCursor</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">After calling the fetch() or fetchAll() function.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="stmt_close" name="stmt_close">close</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong>&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">DB2 for i resources associated with the statement object are freed. The open cursor, if any, is closed and all pending results are discarded.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">close()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLFreeStmt</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After executing an SQL statement and processing the results.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fetch" name="fetch">fetch</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Advances the cursor to the next row of the result set, and retrieves any bound columns. Or positions the cursor based on the requested orientation and then retrieves any bound columns.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a non-blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch(function Callback(Row))</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch(function Callback(Row, Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 3:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch(int Orient, int Offset)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 4:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch(int Orient, int Offset, function Callback(Row))</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetch(int Orient, int Offset, function Callback(Row, Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(Row, Error):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the fetched row. Row is the fetched row represented in a key-value java script array. Error is the error message when error happens.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Orient:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Orient sets the fetch orientation. The valid values are below:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_ABSOLUTE:Move to the row specified by the Offset argument.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_FIRST:Move to the first row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_LAST:Move to the last row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_NEXT:Move to the row following the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_PRIOR:Move to the row preceding the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_RELATIVE If Offset is:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Positive, advance the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Negative, back up the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Zero, do not move the cursor.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Offset:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Offset is the row offset for relative positioning.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLFetch or SQLFetchScroll</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">When the result set is available.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">stmt.prepare("SELECT * FROM ...", function(){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;stmt.execute(function(){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; function asyncFetch(){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;stmt.fetch(function callback(row, rc){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; assert(rc != db.SQL_ERROR);<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log(row);<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(rc != db.SQL_NO_DATA_FOUND)<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; asyncFetch();<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else { // the last row.<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stmt<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; conn.disconn();<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; conn<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;});<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;asyncFetch();<br></br>
+&nbsp; &nbsp; &nbsp; });<br></br>
+});</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fetchSync" name="fetchSync" style="text-decoration: underline; color: rgb(5, 56, 107);">fetchSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of fetch().</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 1:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchSync()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 2:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchSync</span>(function Callback(Row))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 3:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchSync</span>(int Orient, int Offset)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax 4:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchSync</span>(int Orient, int Offset, function Callback(Row))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(Row):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the fetched row. Row is the fetched row represented in a key-value java script array.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Orient:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Orient sets the fetch orientation. The valid values are below:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_ABSOLUTE:Move to the row specified by the Offset argument.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_FIRST:Move to the first row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_LAST:Move to the last row of the result set.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_NEXT:Move to the row following the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_PRIOR:Move to the row preceding the current cursor position.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_FETCH_RELATIVE If Offset is:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Positive, advance the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Negative, back up the cursor that number of rows.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Zero, do not move the cursor.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Offset:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Offset is the row offset for relative positioning.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLFetch or SQLFetchScroll</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fetchAll" name="fetchAll">fetchAll</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Fetch all the rows of data from the result set in one time.</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a non-blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchAll(function Callback(Row))</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchAll(function Callback(Row, Error))</span></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(Row[ , Error]):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the fetched row. Row is the fetched row represented in a key-value java script array. Error is an optional parameter. It is the error message when error happens.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLFetch</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-left: 40px;">stmt.prepare("SELECT * FROM ...", function(){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;stmt.execute(function(){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stmt.fetchAll(function(result){&nbsp;<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;console.log(result);<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;stmt<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;});<br></br>
+});</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fetchAllSync" name="fetchAllSync">fetchAllSync</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">The synchronized version of fetchAll().</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">This is a blocking API.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fetchAllSync(function Callback(Row))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(Row):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a callback function to process the fetched row. Row is the fetched row represented in a key-value java script array.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLFetch</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Example:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">stmt.prepareSync("SELECT * FROM ...");<br></br>
+stmt.executeSync();<br></br>
+stmt.fetchAllSync(function callback(rs){<br></br>
+&nbsp; &nbsp; &nbsp; &nbsp;console.log(rs);<br></br>
+});<br></br>
+stmt<span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">.close()</span>;</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">&nbsp;</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="numFields" name="numFields">numFields</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the number of fields contained in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">numFields()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating number of fields in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLNumResultCols</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="numRows" name="numRows">numRows</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the number of rows in a table affected by an UPDATE, INSERT, MERGE, SELECT from INSERT, or DELETE statement processed against the table.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">numRows()</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating number of rows affected by the operation.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLRowCount</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldType" name="fieldType">fieldType</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the data type of the indicated column in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldType(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating the data type of the specified column in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldWidth" name="fieldWidth">fieldWidth</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the width of the indicated column in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldWidth(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating the width of the specified column in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldNullable" name="fieldNullable">fieldNullable</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns if the indicated column in a result set can be NULL.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldNullable(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an Boolean value indicating if the indicated column in a result set can be NULL.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldName" name="fieldName">fieldName</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:&nbsp;</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the name of the indicated column in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldName(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an string value indicating the name of the specified column in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldPrecise" name="fieldPrecise">fieldPrecise</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the precision of the indicated column in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldPrecise(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating the precision of the specified column in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="fieldScale" name="fieldScale">fieldScale</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the scale of the indicated column in a result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">fieldScale(int Index)</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Index:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Index is the column number in a result set, ordered sequentially left to right, starting at 0.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Return Object:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">It returns an integer value indicating the scale of the specified column in the result set.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLColAttribute</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">When the result set is available.</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;">&nbsp;</p>
+
+<h2 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 1pt 10.5pt 1pt 35.45pt; text-indent: -35.45pt;"><a id="stmtError" name="stmtError">stmtError</a></h2>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Description:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Returns the diagnostic information associated with the most recently called function for a particular statement, connection, or environment handler.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Syntax:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">stmtError(int hType, int Recno, function Callback(ErrMsg))</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;hType:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">hType indicates the handler type of diagnostic information. It can be following values:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_HANDLE_ENV:Retrieve the environment diagnostic information</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_HANDLE_DBC:Retrieve the connection diagnostic information</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQL_HANDLE_STMT:Retrieve the statement diagnostic information</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Recno:</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Recno indicates which error should be retrieved. The first error record is number 1.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Parameter</strong>&nbsp;Callback(ErrMsg):</p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Callback is a call back function to process the retrieved error message. ErrMsg is the retrieved error message. The information consists of a standardized SQLSTATE, the error code, and a text message.</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>DB2CLI API:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SQLGetDiagRec</p>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><strong>Valid Scope:</strong></p>
+
+<p dir="ltr" style="margin-left: 40px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">After calling conn() function</p>
+
+<p dir="ltr" style="margin-left: 10.5pt; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-indent: 20.9pt; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p>
+
+<h1 dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="font-size: 28px;"><a id="Diagnostics" name="Diagnostics">Diagnostics</a></span></h1>
+
+<table border="1" cellpadding="0" cellspacing="0" dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; width: 361px;">
+	<tbody>
+		<tr>
+			<td style="width: 84px;">
+			<p>Error Code</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Meaning</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>0</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Success</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>-1</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Error</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>1</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Success with information</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8001</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter numbers</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8002</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter type</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8003</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Invalid parameter range</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8011</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Environment handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8012</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Connection handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8013</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Statement handler is not allocated</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="width: 84px;">
+			<p>8014</p>
+			</td>
+			<td style="width: 271px;">
+			<p>Result set is not ready.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p dir="ltr" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right;"><a href="#top">Back&nbsp;to&nbsp;top</a></p></div></body></html>
