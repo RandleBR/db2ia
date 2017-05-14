@@ -3,15 +3,15 @@
 <a id="top" name="top"></a>
 # <span style="font-size: 36px;">DB2 for i Access APIs</span>
 
-[Introduction](#Introduction)
+## [Introduction](#Introduction)
 
-[Examples](#Examples)
+## [Examples](#Examples)
 
  - [Basic Query](#BasicQuery)
  - [Stored Procedure](#StoredProcedure)
  - [Concurrent Query](#ConcurrentQuery)
 
-[Class dbconn](#Classdbconn)
+## [Class dbconn](#Classdbconn)
 
 [setConnAttr](#setConnAttr)
 
@@ -25,7 +25,9 @@
 
 [debug](#debug)
 
-[validateStmt](#validStmt)
+[validStmt](#validStmt)
+
+## [Class dbstmt](#Classdbstmt)
 
 [setStmtAttr](#setStmtAttr)
 
@@ -87,9 +89,9 @@
 
 [stmtError](#stmtError)
 
-[debug](#debug)
+## [debug](#debug)
 
-[Diagnostics](#Diagnostics)
+## [Diagnostics](#Diagnostics)
 
 [Back to top](#top)
 
@@ -387,10 +389,9 @@ After calling **conn**() function
 var db = require('/QOpenSys/QIBM/ProdData/OPS/Node6/os400/db2i/lib/db2a');
 
 var dbconn = new db.dbconn();
-//dbconn.debug(true)
 dbconn.conn("*LOCAL")
 try {
-    // note invalid statement with 2 commas after aConst
+    // note invalid statement with 2 commas after aConst will throw error
     var escapedStmt = dbconn.validStmt("SELECT 'ConstantData' as aConst ,, cust.* FROM CUSTOMERS cust")
     console.log("Escaped string is : %s\n", escapedStmt);
 } catch(err) {
@@ -400,7 +401,7 @@ dbconn.close();
 ```
 [Back to top](#top)
 
-# <a id="Class dbstmt" name="Class dbstmt">Class dbstmt</a>
+# <a id="Classdbstmt" name="Classdbstmt">Class dbstmt</a>
 
 The dbstmt class represents a SQL statement object along with its query result set. The construct function accepts an input parameter of a connection object. One connection object can derive many statement objects. Please use the new operator to instantiate it and the delete function to clean up.
 
