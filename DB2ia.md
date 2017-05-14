@@ -372,7 +372,7 @@ _Statement_ is a SQL string that needs to be checked and escaped.
 
 **Return Object:**
 
-It returns an _integer_ value indicating the scale of the specified column in the result set.
+It returns a _string_ with the escaped clauses.
 
 **DB2CLI API:**
 
@@ -382,6 +382,22 @@ SQLNativeSql
 
 After calling **conn**() function
 
+**Example**
+```
+var db = require('/QOpenSys/QIBM/ProdData/OPS/Node6/os400/db2i/lib/db2a');
+
+var dbconn = new db.dbconn();
+//dbconn.debug(true)
+dbconn.conn("*LOCAL")
+try {
+    // note invalid statement with 2 commas after aConst
+    var escapedStmt = dbconn.validStmt("SELECT 'ConstantData' as aConst ,, cust.* FROM CUSTOMERS cust")
+    console.log("Escaped string is : %s\n", escapedStmt);
+} catch(err) {
+    console.log(err.message)
+}
+dbconn.close();
+```
 [Back to top](#top)
 
 # <a id="Class dbstmt" name="Class dbstmt">Class dbstmt</a>
